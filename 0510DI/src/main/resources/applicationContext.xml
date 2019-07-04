@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+  
+  <!-- 매개변수가 없는 생성자를 이용해서 di.Good 클래스의 객체 생성 -->
+  <bean id="g1" class="di.Good" />
+
+<!-- 정수 1개와 문자열 1개를 매개변수로 받는 생성자를 이용해서 객체 생성 -->
+<bean id ="g2" class="di.Good">
+<constructor-arg index="0" value="1" />
+<constructor-arg index="1" value="금" />
+</bean>
+
+<!-- 생성자의 매개변수로 사용할 bean을 생성 -->
+<bean id="num" class="java.lang.Integer">
+<constructor-arg value="2" />
+</bean>
+
+<bean id="name" class="java.lang.String">
+<constructor-arg value="은" />
+</bean>
+
+<bean id="g3" class="di.Good">
+<constructor-arg index="0" ref="num"/>
+<constructor-arg index="1" ref="name"/>
+</bean>
+
+<!-- c 네임 스페이스를 이용한 생성자의 매개변수 설정
+태그를 써서 대입하지 않고 속성을 이용하기 때문에 간결 -->
+<bean id= "g4" class="di.Good" c:num="3" c:name="동" />
+ 
+ <bean id="g5" class="di.Good">
+ <property name="num" value="4"/>
+ <property name="name" value="루비" />
+ </bean>
+ 
+ <bean id="g6" class="di.Good" p:num="5" p:name ="사파이어" />
+ 
+ 
+ <!-- di.CollectionBean 클래스의 bean(객체)을 생성 -->
+ <bean id="collectionBean" class="di.CollectionBean">
+ <property name="list">
+ <list>
+ <!-- 면접에서도 중요하고 프로그래밍에서도 중 -->
+ <value>ArrayList: Array와 유사</value>
+ <value>LinkedList</value>
+ <value>Stack</value>
+ <value>Queue</value>
+ <value>Deque</value> 
+ </list>
+ </property>
+ 
+ <property name="set">
+ <!-- Hash와 Tree를 기억 
+ Hash는 데이터를 저장할 떄 저장할 위치를 계산하는 방법
+ 계산을 해서 데이터를 찾기 때문에 데이터를 빠르게 검색 가능
+ Tree는 크기 순서대로 저장하는 자료구조 -->
+ <set>
+ <value>HashSet</value>
+ <value>LinkedHashSet</value>
+ <value>TreeSet</value>
+ </set>
+ </property>
+ 
+ <property name="map">
+ <map>
+ <entry>
+ <key><value>ServerSideLanguage</value></key>
+ <value>Java</value>
+ </entry>
+ <entry key = "ClientSideLanguage" value="JavaScript"/>
+ <entry key = "Database" value="Oracle"/>
+ <entry key = "IDE" value="STS(Eclipse)"/>
+ <entry key = "WAS(WebContainer)" value="Tomcat 8.5"/>
+ </map>
+ </property>
+ 
+ 
+ <property name="prop">
+ <props>
+ <prop key="framework">Spring</prop>
+ <prop key="OS">Max OS 10</prop>
+ </props>
+ </property>
+ 
+ <!--@ DAO 객체 생성 
+ <bean class="db.GoodDAO" id="goodDAO"></bean>
+  Service 객체 생성 
+  <bean class="db.GoodService" id="goodService"></bean> -->
+  
+  
+  <!--@ 프로퍼티를 이용한 주입 goodDAO라는 프로퍼티에 goodDAO라는 id를 가진 bean이  주
+  <property name="goodDAO" ref="goodDAO"/>  -->
+   </bean>
+   
+  
+ <!-- xml 파일에서 어노테이션을 사용할 수 있도록 해주는 설정 -->
+ <context:annotation-config/>
+ <!-- bean을 자동 생성해주는 패키지 설정 
+ db 패키지가 포함된 모든 하위 패키지도 스캔-->
+ <context:component-scan base-package="db"></context:component-scan>
+ 
+ 
+</beans>

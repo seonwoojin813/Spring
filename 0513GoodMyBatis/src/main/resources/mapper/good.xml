@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="good">
+<!-- goods 테이블의 전체 데이터를 읽어오는 SQL 
+resultType은 select의 결과로 나오는 데이터에서 하나의 행을 저장할 자료형을 설정-->
+<select id = "allgood" resultType="good.domain.Good">
+select *
+from goods
+</select>
+
+<!--  goods 테이블에서 code를 가지고 전체컬럼을 조회하는 SQL 
+parameter가 1개일 때는 이름음 의미가 없습니다. -where code = #{code} -->
+<select id="codesearch"
+parameterType="java.lang.Integer" 
+resultType="good.domain.Good">
+select *
+from goods
+where code = #{code}
+</select>
+
+
+
+
+<!-- goods 테이블에 데이터를 삽입하는 SQL 
+<insert id="insertgood"
+parameterType="good.domain.Good">
+insert into goods(code, name, manufacture, price)
+values(#{code}, #{name}, #{manufacture}, #{price})
+</insert>
+-->
+
+<insert id="insertgood"
+parameterType="good.domain.Good"
+statementType="CALLABLE">
+{call insertgood(#{code}, #{name}, #{manufacture}, #{price})}
+</insert>
+
+<!-- goods 테이블의 데이터를 수정하는 SQL 
+<update id="updategood" parameterType="good.domain.Good">
+		update goods set name=#{name}, manufacture=#{manufacture}, price=#{price} 
+		where code=#{code}
+	</update>
+	-->
+	
+	<update id="updategood"
+parameterType="good.domain.Good"
+statementType="CALLABLE">
+{call updategood(#{code}, #{name}, #{manufacture}, #{price})}
+</update>
+
+<!--  -goods 테이블에서 code를 가지고 데이터를 삭제하는 SQL 
+	<delete id="deletegood" parameterType="java.lang.Integer">
+	delete from goods where code = #{code}
+	</delete> -->
+
+<delete id="deletegood"
+parameterType="java.lang.Integer"
+statementType="CALLABLE">
+{call deletegood(#{code})}
+</delete>
+
+
+</mapper>

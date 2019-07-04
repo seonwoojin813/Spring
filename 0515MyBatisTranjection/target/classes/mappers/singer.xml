@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="singer">
+<select id="singerlist"
+ resultType="Singer">
+ select *
+ from singer
+</select>
+
+<insert id="singerinsert" 
+parameterType="Singer">
+insert into singer(num, name, majorsong)
+values(singerseq.nextval, #{name}, #{majorsong})
+</insert>
+
+</mapper>

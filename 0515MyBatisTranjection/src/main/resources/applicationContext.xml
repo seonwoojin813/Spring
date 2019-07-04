@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+<!-- xml 설정 과 어노테이션을 같이 사용하기 위한 설정 -->
+<context:annotation-config  />
+
+<!-- 인스턴스를 자동으로 생성하기 위한 패키지 위치 설정 -->
+<context:component-scan base-package="mybatis" />
+
+<!-- 데이터베이스 접속을 위한 정보 설정 
+Spring 데이터베이스 연동 프로젝트에서는 필수-->
+<bean
+class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+id="dataSource">
+<property value="oracle.jdbc.driver.OracleDriver"
+name="driverClassName" />
+<property value="jdbc:log4jdbc:oracle:thin:@192.168.0.100:1521/XEPDB1"
+name="url" />
+<property value="user06" name="username" />
+<property value="user06" name="password" />
+</bean>
+
+<!-- MyBatis 설정을 위한 설정 : XML이용 -->
+<bean class="org.mybatis.spring.SqlSessionFactoryBean"
+id="sqlSessionFactory">
+<property name="dataSource" ref="dataSource" />
+<!-- 환경설정 파일 경로 설정 --> 
+<property name="configLocation"
+value="classpath:mybatis-config.xml"/>
+
+<!-- 매퍼파일 경로 설정 -->
+<property value="classpath:mappers/singer.xml"
+name="mapperLocations" />
+</bean>
+
+<bean class="org.mybatis.spring.SqlSessionTemplate"
+id="sqlSession" destroy-method="clearCache">
+<constructor-arg name="sqlSessionFactory"
+ref="sqlSessionFactory" />
+</bean>
+
+<bean class="org.springframework.jdbc.core.simple.SimpleJdbcInsert"
+id="simpleJdbcInsert">
+<constructor-arg ref ="dataSource"/>
+</bean>
+
+
+<bean id="transactionManager"
+	class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+
+<!-- MyBatis 설정 : Mapper 인터페이스 이용 
+<bean class="org.mybatis.spring.SqlSessionFactoryBean"
+id="sqlSessionFactory">
+<property name="dataSource" ref="dataSource" />
+</bean>
+
+<bean id= "goodMapper"
+class="org.mybatis.spring.mapper.MapperFactoryBean">
+<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+<property name="mapperInterface" value="good.dao.GoodMapper" />
+</bean>
+-->
+
+</beans>
+

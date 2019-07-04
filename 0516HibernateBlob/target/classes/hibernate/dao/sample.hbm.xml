@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="hibernate.domain">
+<class name="Sample" table="Sample">
+<id name="num" column="NUM" />
+<property name="name" column="NAME"/>
+<property name="regdate" column="REGDATE"/>
+<property name="image" column="image"   type="binary"/>
+<!-- 따옴표 안에 공백 넣으면 에러 -->
+</class>
+</hibernate-mapping>

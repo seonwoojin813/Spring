@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<default-servlet-handler />
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- 기본 view resolver view 이름이 오면 prefix 와 suffix 부분을 조헙해서 실제 출력할 view를 결정하는 설정  -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+		<beans:property name="order" value="1" ></beans:property>
+	</beans:bean>
+	
+	<!-- 뷰이름을 가지고 직접출력할 뷸플설정하는 뷰 리졸버를 추가 -->
+	<beans:bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+	<beans:property name="order" value="0">
+	</beans:property></beans:bean>
+	
+	<!--   download 라는 view 이름이 오는 경우 DownloadView로 출력하라는 설정을 추가 -->
+	<beans:bean id="download"
+	class="kr.co.pk.view.DownloadView" />
+
+<!-- excel 이라는 VIEW 이름이 오는 경우 ExcelView로 출력하라는 설정 -->
+<beans:bean id="excel"
+class="kr.co.pk.view.ExcelView" />
+
+<!-- pdf 이라는 VIEW 이름이 오는 경우 PdfView로 출력하라는 설정 -->
+<beans:bean id="pdf"
+class="kr.co.pk.view.PdfView" />
+
+<!-- json 이라는 view 이름이 오는 경우 JSON 형식로 출력하라는 설정 -->
+<beans:bean id="json" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+
+<!-- xml 이라는 view 이름이 오는 경우 list라는 데이터를 xml로 출력하는 설정 -->
+	
+	<!-- 출력할 데이터 목록을 가진 클래스를 등록 -->
+	<beans:bean id="marshaller"
+		class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+		<beans:property name="classesToBeBound">
+			<beans:list>
+				<beans:value>kr.co.pk.domain.DataList</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="xml"
+		class="org.springframework.web.servlet.view.xml.MarshallingView">
+		<beans:property name="marshaller" ref="marshaller" />
+		<beans:property name="modelKey" value="list" />
+	</beans:bean> 
+
+	<context:component-scan base-package="kr.co.pk" />
+
+	<beans:bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="mappingResources">
+			<beans:list>
+				<beans:value>kr/co/pk/dao/item.hbm.xml</beans:value>
+			</beans:list>
+		</beans:property>
+		<beans:property name="hibernateProperties">
+			<beans:value>
+				hibernate.dialect=org.hibernate.dialect.Oracle10gDialect
+			</beans:value>
+		</beans:property>
+	</beans:bean>
+
+	<tx:annotation-driven />
+	<beans:bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<beans:property name="sessionFactory"
+			ref="sessionFactory" />
+	</beans:bean>
+	
+	
+
+</beans:beans>

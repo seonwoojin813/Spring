@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- Controller 생성을 위한 코드 -->
+<bean id="doController"
+class="naver.wjsun1004.springmvc.DoController" /> 
+
+<!--  ViewResolver 설정 
+Controller가 리턴한 뷰 이름을 가지고 prefix와 suffix 조합해서
+실제 결과를 출력할  뷰 파일을 결정하는 설정-->
+<bean id="viewResolver"
+class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+<property name="prefix" value="/view/" />
+<property name="suffix" value=".jsp" />
+</bean>
+
+</beans>

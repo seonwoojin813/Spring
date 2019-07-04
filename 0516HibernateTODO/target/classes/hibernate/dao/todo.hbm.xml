@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="hibernate.domain">
+<class name="TODO"  table="TODO">
+
+<!--  
+<id name="num" column="NUM" />
+<property name = "tilte" column="title" />
+<property name="content" column="content" />
+<property name="runtime" column="runtime" />
+-->
+
+<id name="num" column="num">
+   <generator class="sequence">
+  <param name="sequence">TODOseq</param>      
+    </generator>
+</id>
+<property name = "title" column="title" />
+<property name="content" column="content" />
+<property name="rundate" column="rundate" />
+</class>
+</hibernate-mapping>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>스크립트 연습</title>
+<!--  아래 폼의 내용을 삽입하고자 할 때 이름과 전화번호가 입력되지 않은 경우에는 이름과 전화번호가 필수라고 대화상자를 출력하고
+폼의 내용이 전송되지 않도록 하시오  -->
+</head>
+<body>
+<form action ="sample" method="post" id="sample">
+이름:<input type="text" id="name" name="name" />
+<br />
+전화번호:<input type="text" id="phone" name="phone" />
+<br />
+<input type="submit" value="삽입" />
+</form>
+
+<script>
+//필요한 DOM 객체찾아오기
+//id, name 조심하기
+var sample = document.getElementById("sample");
+//var name = document.getElementById("name");
+var n = document.getElementById("name");
+var phone = document.getElementById("phone");
+
+//폼의 submit 이벤트 처리
+sample.addEventListener("submit", function(e){
+	var namevalue = n.value;
+	var phonevalue = phone.value;
+	if(namevalue.trim().length == 0){
+		alert("이름은 필수 입력입니다.")
+		n.focus();
+		//기본이벤트 제거
+		e.preventDefault();
+		return
+	}
+	
+	if(phonevalue.trim().length == 0){
+		alert("전화번호는 필수 입력입니다.")
+		phone.focus();
+		//기본이벤트 제거
+		e.preventDefault();
+	}
+});
+
+</script>
+
+</body>
+</html>
